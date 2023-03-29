@@ -1,0 +1,30 @@
+{% extends "home.html" %}
+{% block title %}Enter tickers{% endblock %}
+{% block content %}
+    <h1 class="title">Curva de LEDES y LECER</h1>
+
+    <form action="" method="post" name="ticker_form">
+        <div class="select">
+                    <select name="letra" class="form-select" aria-label="size 3 select example">>
+                        <option value="ledes">LEDES</option>
+                        <option value="lecer">LECER</option>
+                        <option value="both">Ambas</option>
+                    </select>
+        </div>
+
+
+      <div class="field">
+<!--        <label for="title" class="label"></label>-->
+<!--        <div class="date">-->
+            <input type="date" id="start" name="date"
+            min="2023-01-01" max="2023-12-31">
+<!--        </div>-->
+      </div>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary is-small">Send</button>
+        </div>
+      </div>
+    </form>
+{% endblock %}
