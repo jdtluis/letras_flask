@@ -3,8 +3,8 @@ import pandas as pd
 import requests
 import io
 import datetime as dt
-import tabula
-from bs4 import BeautifulSoup
+#import tabula
+#from bs4 import BeautifulSoup
 from time import sleep
 import sqlite3
 from scipy.interpolate import CubicSpline
@@ -114,36 +114,50 @@ def fitCurve(DM, TIR):
     return curve_points, cs(curve_points)
 
 
-if __name__ == '__main__':
-    con = sqlite3.connect('../data/letras.db')
-    links = getLinks()
-    dates = pd.DataFrame(getdates(), columns=['Fecha'])
-    dateslink = []
-    for i, l in enumerate(links):
-        temp = l.split('/')[5:7]
-        year = temp[0]
-        monthday = temp[1].split('_')
-        month = monthday[0]
-        day = monthday[1]
-        if len(monthday[0]) == 1:
-            month = '0'+monthday[0]
+# if __name__ == '__main__':
+#     con = sqlite3.connect('../data/letras.db')
+#     links = getLinks()
+#     dates = pd.DataFrame(getdates(), columns=['Fecha'])
+#     dateslink = []
+#     for i, l in enumerate(links):
+#         temp = l.split('/')[5:7]
+#         year = temp[0]
+#         monthday = temp[1].split('_')
+#         month = monthday[0]
+#         day = monthday[1]
+#         if len(monthday[0]) == 1:
+#             month = '0'+monthday[0]
+#
+#         if len(monthday[1]) == 1:
+#             day = '0' + monthday[1]
+#         dateslink.append((i, year + '-' + month + '-' + day))
+#     dateslink = pd.DataFrame(dateslink,columns=['id','Fecha'])
+#     filldates = dateslink.merge(dates, indicator=True, how='left').loc[lambda x: x['_merge'] != 'both']
+#     filldatesId = dateslink['id'][dateslink['Fecha'].isin(filldates['Fecha'])].to_list()
+#     filldateslink = [l for i, l in enumerate(links) if i in filldatesId]
+#
+#     ledes, lecer = getData(filldateslink)
+#
+#     #pd.concat(ledes).to_sql(name='ledes', con=con)
+#     #pd.concat(lecer).to_sql(name='lecer', con=con)
+#     if len(ledes) > 0 and len(ledes) == len(lecer):
+#         insert(pd.concat(ledes), 'ledes')
+#         insert(pd.concat(lecer), 'lecer')
+#     con.close()
+#
 
-        if len(monthday[1]) == 1:
-            day = '0' + monthday[1]
-        dateslink.append((i, year + '-' + month + '-' + day))
-    dateslink = pd.DataFrame(dateslink,columns=['id','Fecha'])
-    filldates = dateslink.merge(dates, indicator=True, how='left').loc[lambda x: x['_merge'] != 'both']
-    filldatesId = dateslink['id'][dateslink['Fecha'].isin(filldates['Fecha'])].to_list()
-    filldateslink = [l for i, l in enumerate(links) if i in filldatesId]
 
-    ledes, lecer = getData(filldateslink)
 
-    #pd.concat(ledes).to_sql(name='ledes', con=con)
-    #pd.concat(lecer).to_sql(name='lecer', con=con)
-    if len(ledes) > 0 and len(ledes) == len(lecer):
-        insert(pd.concat(ledes), 'ledes')
-        insert(pd.concat(lecer), 'lecer')
-    con.close()
+
+
+
+
+
+
+
+
+
+
 
 
 # import plotly.graph_objects as go
