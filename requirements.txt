@@ -3,3 +3,4 @@ requests
 pandas==1.5.2
 scipy
 numpy
+gunicorn
