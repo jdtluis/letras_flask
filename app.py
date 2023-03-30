@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import os
+import json
 import requests
 import pandas as pd
 from utils import letras as lt
@@ -32,7 +33,10 @@ def index(chartID = 'chart_ID', chart_height = 400): #
 		container = {}
 
 		for s in letras:
-			data = getdata(s, date)
+			url = f"http://127.0.0.1:5000/letras?tipo={s}&date={date}"
+			r = requests.get(url)
+			data = pd.DataFrame(r.json()) #getdata(s, date)
+			print(data)
 
 			if data.empty:
 				series[s] = [[0,0],[0,0]]
@@ -46,17 +50,5 @@ def index(chartID = 'chart_ID', chart_height = 400): #
 		return render_template('/ticker_block.html', chartID=chartID, series=series, title=title, container=container)
 
 
-def getdata(letra, date):
-	con = sqlite3.connect('data/letras.db')
-	data = con.execute(f'SELECT Especie, FechaPrecio, CAST(DM as int) DM, TIR FROM {letra} WHERE FechaPrecio = "{date}" ORDER BY cast(DM as int) asc').fetchall()
-	con.close()
-	if not data:
-		return pd.DataFrame([])
-	else:
-		data = pd.DataFrame(data, columns=['Especie', 'FechaPrecio', 'DM', 'TIR'])
-		data = data[~data['DM'].isna()]
-		return data
-
-
 #if __name__ == "__main__":
-	#app.run(debug = True, passthrough_errors=True) #, host='0.0.0.0', port=8080
+#	app.run(debug = True, passthrough_errors=True, port=8080) #, host='0.0.0.0', port=8080
