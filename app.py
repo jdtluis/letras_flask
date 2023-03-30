@@ -8,6 +8,7 @@ from enum import Enum
 
 app = Flask(__name__)
 
+
 class tipoletra(Enum):
 	ledes = 1
 	lecer = 2
