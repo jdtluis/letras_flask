@@ -3,7 +3,7 @@ import os
 import json
 import requests
 import pandas as pd
-from utils import letras as lt
+#from utils import letras as lt
 import sqlite3
 from enum import Enum
 
