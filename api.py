@@ -1,10 +1,8 @@
 from flask import Flask, jsonify, request
-import os
-import requests
 import pandas as pd
 from utils import letras as lt
 import sqlite3
-from enum import Enum
+
 
 app = Flask(__name__)
 
@@ -15,8 +13,18 @@ def get_ledes():
     letra = request.args.get('tipo', default='ledes', type=str)
     date = request.args.get('date', default='2023-03-27', type=str)
     data = getdata(letra, date)
-    print(data.to_dict())
-    return jsonify(data.to_dict())
+    if data.empty:
+        d = {}
+    else:
+        data['TIR'] = round(data['TIR'], 4)
+        dm, fit = lt.fitCurve(data['DM'], data['TIR'])
+        #fitted = [list(d) for d in zip(dm.round(2).tolist(), fit.round(2).tolist())]
+        d = {
+            'DM' : data['DM'].to_list(),
+            'TIR': data['TIR'].to_list(),
+            'DMF': dm.round(2).tolist(),
+            'FIT': fit.round(2).tolist()}
+    return jsonify(d)
 
 
 def getdata(letra, date):
@@ -33,5 +41,5 @@ def getdata(letra, date):
         return data
 
 
-#if __name__ == "__main__":
-#    app.run(debug = True, passthrough_errors=True) #, host='0.0.0.0', port=8080
+if __name__ == "__main__":
+    app.run(debug = True, passthrough_errors=True) #, host='0.0.0.0', port=8080
