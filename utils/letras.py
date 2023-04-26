@@ -64,7 +64,10 @@ def transformData(letras, isledes=True):
         columns.pop(columns.index("PF"))
         columns.insert(3, 'CERinicial')
     letras.columns = columns
-    letras[["Rendimiento", "TNA", "TIR"]] = letras[["Rendimiento", "TNA", "TIR"]].replace('%', '', regex=True).replace('[a-z]', np.nan, regex=True)
+    letras = letras.replace(',', '.', regex=True)
+    letras[["Rendimiento", "TNA", "TIR"]] = letras[["Rendimiento", "TNA", "TIR"]]\
+        .replace('%', '', regex=True)\
+        .replace('[a-z]', np.nan, regex=True)
     letras["DM"] = letras["DM"].replace('-', np.nan, regex=True)
     # Fields to float
     if not isledes:
